@@ -8,6 +8,7 @@ class User
 public:
     
     User(std::string& ,std::string&, std::string&, std::string&, std::string&, std::string&){}
+    void CreateAccount(std::string & , std::string &, std::string &, std::string &, std::string &, std::string &);
     void Login(std::string& , std::string&);
 
 
