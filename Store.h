@@ -11,8 +11,10 @@ public:
     Store(int ID, const std::string& StoreName);
 
     static void ShowStores();
+    static Store* getStoreById(int id);
     void addProduct(const Product& product);
     void ShowProducts() const;
+    const std::vector<Product>& getProducts() const;
 
 private:
     int ID;
