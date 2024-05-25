@@ -2,10 +2,10 @@
 
 AppSystem::AppSystem()
 {
+    std::cout<<"Welcome, "<<client.username<<" !";
+
+    
+
 
 }
 
-AppSystem::~AppSystem()
-{
-
-}

@@ -1,41 +1,24 @@
 #ifndef USER_H
 #define USER_H
+
 #include <string>
 
-
-class User
-{
+class User {
 public:
-    
-    User(std::string& ,std::string&, std::string&, std::string&, std::string&, std::string&){}
-    void CreateAccount(std::string & , std::string &, std::string &, std::string &, std::string &, std::string &);
-    void Login(std::string& , std::string&);
+    User();
+    User(const std::string&, const std::string&, const std::string&, const std::string&, const std::string&, const std::string&, const std::string&);
 
+    void Login();
+    void CreateAccount();
 
-
-private:
-
+protected:
     std::string username;
     std::string password;
+    std::string email;
     std::string Name;
     std::string LastName;
     std::string PhoneNumber;
-    std::string Adress;
-
-
+    std::string Address;
 };
 
 #endif
-
-
-
-/*
-
-    User
-    - username
-    - password
-
-
-
-
-*/

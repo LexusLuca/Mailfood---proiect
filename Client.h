@@ -1,16 +1,14 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#pragma once
+#include <string>
+#include "User.h"
 
-class Client
+class Client : public User
 {
 public:
-    Client();
-    ~Client();
-
-private:
-
+    Client(const std::string&, const std::string&, const std::string&, const std::string&, const std::string&, const std::string&, const std::string&);
+    void getClient() const;
 };
 
 #endif
