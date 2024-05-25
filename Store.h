@@ -1,16 +1,20 @@
 #ifndef STORE_H
 #define STORE_H
 
-#pragma once
+#include <vector>
+#include <iostream>
+#include <string>
 
-class Store
-{
+class Store {
 public:
-    Store();
-    
+    Store(int ID, const std::string& StoreName);
+
+    static void ShowStores();
 
 private:
-
+    int ID;
+    std::string StoreName;
+    static std::vector<Store> Stores;
 };
 
 #endif

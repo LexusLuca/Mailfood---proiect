@@ -5,11 +5,11 @@
 
 class User {
 public:
-    User();
-    User(const std::string&, const std::string&, const std::string&, const std::string&, const std::string&, const std::string&, const std::string&);
+    User(const std::string &username, const std::string &password, const std::string &email,const std::string &Name, const std::string &LastName, const std::string &PhoneNumber, const std::string &Address);
 
-    void Login();
     void CreateAccount();
+    void Login();
+    std::string getUsername() const;
 
 protected:
     std::string username;
@@ -21,4 +21,4 @@ protected:
     std::string Address;
 };
 
-#endif
+#endif // USER_H

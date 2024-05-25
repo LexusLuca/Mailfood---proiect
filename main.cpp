@@ -1,17 +1,18 @@
 #include <iostream>
 #include "Client.h"
-
+#include "Store.h"
 
 using namespace std;
 
 int main()
 {
-    Client client("user123", "password", "glm21@yahoo.com" , "John", "Doe", "123-456-7890", "123 Main St");
+    Client client("Luca", "1234", "glm21@yahoo.com" , "Luca", "Gavra", "0732059429", "Strada N Balcescu");
+    Store store1(1, "Store One");
+    Store store2(2, "Store Two");
     client.getClient();
     client.CreateAccount();
     client.Login();
-    AppSystem();
-    
+    Store::ShowStores();
     return 0;
 
 }
