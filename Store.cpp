@@ -15,10 +15,9 @@ void Store::ShowStores() {
     }
     std::cin >> id;
 
-    
-    for (const auto& store : Stores) {
+    for (auto& store : Stores) {
         if (store.ID == id) {
-            std::cout << "Hi\n";
+            store.ShowProducts();
             return;
         }
     }
@@ -30,3 +29,16 @@ void Store::ShowStores() {
         std::cout << "Order?\n";
     }
 }
+
+void Store::addProduct(const Product& product) {
+    products.push_back(product);
+}
+
+void Store::ShowProducts() const {
+    std::cout << "Products in " << StoreName << ":\n";
+    for (const auto& product : products) {
+        std::cout << " - " << product.getName() << ": $" << product.getPrice()
+                  << ", Stock: " << product.getStockQuantity() << "\n";
+    }
+}
+
