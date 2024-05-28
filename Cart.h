@@ -1,16 +1,16 @@
 #ifndef CART_H
 #define CART_H
 
-#include "Product.h"
+#include "IProduct.h"
 #include <vector>
 
 class Cart {
-public:
-    void addProduct(IProduct& product);
-    void showCart() const;
-
 private:
     std::vector<IProduct*> products;
+public:
+    void addProduct(IProduct* product);
+    void checkout();
+    void displayCart();
 };
 
 #endif // CART_H
