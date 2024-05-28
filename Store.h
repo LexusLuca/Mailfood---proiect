@@ -1,29 +1,20 @@
 #ifndef STORE_H
 #define STORE_H
 
+#include "IStore.h"
+#include "IProduct.h"
 #include <vector>
 #include <string>
-#include <iostream>
-#include "IProduct.h"
 
-class Store {
-public:
-    Store(int ID, const std::string& StoreName);
-
-    void addProduct(IProduct* product);
-    void showProducts() const;
-    std::string getStoreName() const;
-    int getStoreId() const;
-    const std::vector<IProduct*>& getProducts() const;
-
-    static void showStores();
-    static Store* getStoreById(int id);
-
+class Store : public IStore {
 private:
-    int ID;
-    std::string StoreName;
+    std::string name;
     std::vector<IProduct*> products;
-    static std::vector<Store*> Stores;
+public:
+    Store(const std::string& name);
+    void addProduct(IProduct* product);
+    std::string getName() const override;
+    std::vector<IProduct*> getProducts() const override;
 };
 
 #endif // STORE_H

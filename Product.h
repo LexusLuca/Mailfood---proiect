@@ -4,19 +4,16 @@
 #include "IProduct.h"
 
 class Product : public IProduct {
-public:
-    Product(const std::string& name, double price, int stockQuantity);
-
-    std::string getName() const override;
-    double getPrice() const override;
-    int getStockQuantity() const override;
-
-    void setStockQuantity(int quantity) override;
-
 private:
     std::string name;
     double price;
-    int stockQuantity;
+    int stock;
+public:
+    Product(const std::string& name, double price, int stock);
+    std::string getName() const override;
+    double getPrice() const override;
+    int getStock() const override;
+    void reduceStock(int quantity) override;
 };
 
 #endif // PRODUCT_H
