@@ -1,26 +1,16 @@
 #ifndef USER_H
 #define USER_H
 
-#include <string>
+#include "IUser.h"
 
-class User {
-public:
-    User(const std::string& username, const std::string& password, const std::string& email,
-         const std::string& Name, const std::string& LastName, const std::string& PhoneNumber, 
-         const std::string& Address);
-
-    virtual void createAccount();
-    virtual void login();
-    std::string getUsername() const;
-
-protected:
+class User : public IUser {
+private:
     std::string username;
     std::string password;
-    std::string email;
-    std::string Name;
-    std::string LastName;
-    std::string PhoneNumber;
-    std::string Address;
+public:
+    User(const std::string& username, const std::string& password);
+    std::string getUsername() const override;
+    std::string getPassword() const override;
 };
 
 #endif // USER_H
