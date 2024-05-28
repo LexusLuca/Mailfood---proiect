@@ -21,3 +21,4 @@ void Product::reduceStock(int quantity) {
     }
     stock -= quantity;
 }
+

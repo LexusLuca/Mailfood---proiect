@@ -13,4 +13,3 @@ std::string Store::getName() const {
 std::vector<IProduct*> Store::getProducts() const {
     return products;
 }
-
