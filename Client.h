@@ -1,9 +1,9 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include <string>
 #include "User.h"
 #include "Cart.h"
+#include <string>
 
 class Client : public User {
 public:
@@ -12,6 +12,10 @@ public:
            const std::string &Address);
     void getClient() const;
     Cart& getCart();
+
+    // Inherit createAccount and login from User
+    using User::createAccount;
+    using User::login;
 
 private:
     Cart cart;

@@ -1,8 +1,9 @@
+#include "HelperFunctions.h"
+#include "Store.h"
+#include "Product.h"
 #include <iostream>
 #include <algorithm>
-#include "Store.h"
-#include "Client.h"
-#include "Product.h"
+#include <stdexcept>
 
 void addProductsToStores() {
     Store store1(1, "Carrefour AFI");
@@ -12,35 +13,39 @@ void addProductsToStores() {
     Store store5(5, "Pizza Dodo");
     Store store6(6, "Pizza Hut");
 
-    store1.addProduct(Product("Milk", 1.5, 20));
-    store1.addProduct(Product("Bread", 1.0, 50));
-    store2.addProduct(Product("Water", 0.5, 100));
-    store2.addProduct(Product("Butter", 2.5, 30));
-    store3.addProduct(Product("Margherita Pizza", 8.0, 10));
-    store3.addProduct(Product("Pepperoni Pizza", 10.0, 8));
-    store4.addProduct(Product("Radu Special", 9.5, 15));
-    store5.addProduct(Product("Dodo Delight", 8.75, 12));
-    store6.addProduct(Product("Hut Classic", 7.25, 20));
+    store1.addProduct(new Product("Milk", 1.5, 20));
+    store1.addProduct(new Product("Bread", 1.0, 50));
+    store2.addProduct(new Product("Water", 0.5, 100));
+    store2.addProduct(new Product("Butter", 2.5, 30));
+    store3.addProduct(new Product("Margherita Pizza", 8.0, 10));
+    store3.addProduct(new Product("Pepperoni Pizza", 10.0, 8));
+    store4.addProduct(new Product("Radu Special", 9.5, 15));
+    store5.addProduct(new Product("Dodo Delight", 8.75, 12));
+    store6.addProduct(new Product("Hut Classic", 7.25, 20));
 }
 
 void selectStoreAndAddProductsToCart(Client& client) {
     while (true) {
         bool isValidStore = false;
-        Store* selectedStore = nullptr; // Define selectedStore within the loop
+        Store* selectedStore = nullptr;
 
         while (!isValidStore) {
-            Store::ShowStores();
+            try {
+                Store::showStores();
 
-            int storeId;
-            std::cout << "Enter the store ID: ";
-            std::cin >> storeId;
+                int storeId;
+                std::cout << "Enter the store ID: ";
+                std::cin >> storeId;
 
-            selectedStore = Store::getStoreById(storeId); // Update selectedStore inside the loop
-            if (selectedStore == nullptr) {
-                std::cout << "Invalid store ID. Please try again.\n";
-            } else {
-                selectedStore->ShowProducts();
-                isValidStore = true;
+                selectedStore = Store::getStoreById(storeId);
+                if (selectedStore == nullptr) {
+                    throw std::invalid_argument("Invalid store ID. Please try again.");
+                } else {
+                    selectedStore->showProducts();
+                    isValidStore = true;
+                }
+            } catch (const std::exception& e) {
+                std::cout << e.what() << std::endl;
             }
         }
 
@@ -60,12 +65,16 @@ void selectStoreAndAddProductsToCart(Client& client) {
             // Search for the product in the store
             bool productFound = false;
             for (const auto& product : selectedStore->getProducts()) {
-                std::string lowercaseProductName = product.getName();
+                std::string lowercaseProductName = product->getName();
                 std::transform(lowercaseProductName.begin(), lowercaseProductName.end(), lowercaseProductName.begin(), ::tolower);
                 if (lowercaseProductName == productName) {
-                    client.getCart().addProduct(product);
-                    productFound = true;
-                    std::cout << "Added " << product.getName() << " to cart.\n";
+                    try {
+                        client.getCart().addProduct(*product);
+                        productFound = true;
+                        std::cout << "Added " << product->getName() << " to cart.\n";
+                    } catch (const std::exception& e) {
+                        std::cout << e.what() << "\n";
+                    }
                     break;
                 }
             }

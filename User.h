@@ -5,10 +5,12 @@
 
 class User {
 public:
-    User(const std::string &username, const std::string &password, const std::string &email,const std::string &Name, const std::string &LastName, const std::string &PhoneNumber, const std::string &Address);
+    User(const std::string& username, const std::string& password, const std::string& email,
+         const std::string& Name, const std::string& LastName, const std::string& PhoneNumber, 
+         const std::string& Address);
 
-    void CreateAccount();
-    void Login();
+    virtual void createAccount();
+    virtual void login();
     std::string getUsername() const;
 
 protected:

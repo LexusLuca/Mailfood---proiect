@@ -1,17 +1,17 @@
 #ifndef PRODUCT_H
 #define PRODUCT_H
 
-#include <string>
+#include "IProduct.h"
 
-class Product {
+class Product : public IProduct {
 public:
     Product(const std::string& name, double price, int stockQuantity);
 
-    std::string getName() const;
-    double getPrice() const;
-    int getStockQuantity() const;
+    std::string getName() const override;
+    double getPrice() const override;
+    int getStockQuantity() const override;
 
-    void setStockQuantity(int quantity);
+    void setStockQuantity(int quantity) override;
 
 private:
     std::string name;
