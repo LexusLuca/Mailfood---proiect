@@ -1,9 +1,10 @@
 #include "Cart.h"
+#include "CustomException.h"
 #include <iostream>
 
 void Cart::addProduct(IProduct* product) {
     if (product->getStock() <= 0) {
-        throw std::out_of_stock("Product out of stock.");
+        throw CustomException("Product out of stock.");
     }
     products.push_back(product);
     product->reduceStock(1);

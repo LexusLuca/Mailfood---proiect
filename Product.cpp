@@ -1,5 +1,5 @@
 #include "Product.h"
-#include <stdexcept>
+#include "CustomException.h"
 
 Product::Product(const std::string& name, double price, int stock) : name(name), price(price), stock(stock) {}
 
@@ -17,7 +17,7 @@ int Product::getStock() const {
 
 void Product::reduceStock(int quantity) {
     if (quantity > stock) {
-        throw std::out_of_stock("Not enough stock available.");
+        throw CustomException("Not enough stock available.");
     }
     stock -= quantity;
 }

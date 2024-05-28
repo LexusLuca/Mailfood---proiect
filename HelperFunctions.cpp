@@ -1,4 +1,5 @@
 #include "HelperFunctions.h"
+#include "CustomException.h"
 #include <iostream>
 
 void HelperFunctions::createUser(std::unordered_map<std::string, Client*>& users) {
@@ -68,7 +69,7 @@ void HelperFunctions::shop(Store* store, Cart& cart) {
             try {
                 cart.addProduct(products[productChoice - 1]);
                 std::cout << "Product added to cart." << std::endl;
-            } catch (const std::exception& e) {
+            } catch (const CustomException& e) {
                 std::cout << e.what() << std::endl;
             }
         }
