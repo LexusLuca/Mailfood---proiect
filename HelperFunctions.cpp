@@ -1,97 +1,76 @@
 #include "HelperFunctions.h"
-#include "Store.h"
-#include "Product.h"
 #include <iostream>
-#include <algorithm>
-#include <stdexcept>
 
-void addProductsToStores() {
-    Store store1(1, "Carrefour AFI");
-    Store store2(2, "Auchan Coresi");
-    Store store3(3, "Pizza Volla");
-    Store store4(4, "Pizza Radu");
-    Store store5(5, "Pizza Dodo");
-    Store store6(6, "Pizza Hut");
+void HelperFunctions::createUser(std::unordered_map<std::string, Client*>& users) {
+    std::string username, password;
+    std::cout << "Enter username: ";
+    std::cin >> username;
+    std::cout << "Enter password: ";
+    std::cin >> password;
 
-    store1.addProduct(new Product("Milk", 1.5, 20));
-    store1.addProduct(new Product("Bread", 1.0, 50));
-    store2.addProduct(new Product("Water", 0.5, 100));
-    store2.addProduct(new Product("Butter", 2.5, 30));
-    store3.addProduct(new Product("Margherita Pizza", 8.0, 10));
-    store3.addProduct(new Product("Pepperoni Pizza", 10.0, 8));
-    store4.addProduct(new Product("Radu Special", 9.5, 15));
-    store5.addProduct(new Product("Dodo Delight", 8.75, 12));
-    store6.addProduct(new Product("Hut Classic", 7.25, 20));
+    if (users.find(username) != users.end()) {
+        std::cout << "Username already exists." << std::endl;
+    } else {
+        users[username] = new Client(username, password);
+        std::cout << "Account created successfully." << std::endl;
+    }
 }
 
-void selectStoreAndAddProductsToCart(Client& client) {
+Client* HelperFunctions::loginUser(const std::unordered_map<std::string, Client*>& users) {
+    std::string username, password;
+    std::cout << "Enter username: ";
+    std::cin >> username;
+    std::cout << "Enter password: ";
+    std::cin >> password;
+
+    auto it = users.find(username);
+    if (it != users.end() && it->second->getPassword() == password) {
+        return it->second;
+    } else {
+        std::cout << "Invalid username or password." << std::endl;
+        return nullptr;
+    }
+}
+
+Store* HelperFunctions::chooseStore(const std::vector<Store*>& stores) {
+    std::cout << "Choose a store:" << std::endl;
+    for (size_t i = 0; i < stores.size(); ++i) {
+        std::cout << i + 1 << ". " << stores[i]->getName() << std::endl;
+    }
+
+    int storeChoice;
+    std::cin >> storeChoice;
+    if (storeChoice < 1 || storeChoice > stores.size()) {
+        std::cout << "Invalid choice." << std::endl;
+        return nullptr;
+    }
+
+    return stores[storeChoice - 1];
+}
+
+void HelperFunctions::shop(Store* store, Cart& cart) {
     while (true) {
-        bool isValidStore = false;
-        Store* selectedStore = nullptr;
+        std::cout << "Products in " << store->getName() << ":" << std::endl;
+        auto products = store->getProducts();
+        for (size_t i = 0; i < products.size(); ++i) {
+            std::cout << i + 1 << ". " << products[i]->getName() << " - $" << products[i]->getPrice() << " - Stock: " << products[i]->getStock() << std::endl;
+        }
 
-        while (!isValidStore) {
+        std::cout << "Choose a product to add to cart (0 to checkout): ";
+        int productChoice;
+        std::cin >> productChoice;
+        if (productChoice == 0) {
+            cart.checkout();
+            break;
+        } else if (productChoice < 1 || productChoice > products.size()) {
+            std::cout << "Invalid choice." << std::endl;
+        } else {
             try {
-                Store::showStores();
-
-                int storeId;
-                std::cout << "Enter the store ID: ";
-                std::cin >> storeId;
-
-                selectedStore = Store::getStoreById(storeId);
-                if (selectedStore == nullptr) {
-                    throw std::invalid_argument("Invalid store ID. Please try again.");
-                } else {
-                    selectedStore->showProducts();
-                    isValidStore = true;
-                }
+                cart.addProduct(products[productChoice - 1]);
+                std::cout << "Product added to cart." << std::endl;
             } catch (const std::exception& e) {
                 std::cout << e.what() << std::endl;
             }
         }
-
-        while (true) {
-            std::string productName;
-            std::cout << "Enter the product name to add to cart (or 'done' to finish): ";
-            std::cin.ignore(); // To clear the input buffer
-            std::getline(std::cin, productName);
-
-            if (productName == "done") {
-                break; // Break from the inner loop
-            }
-
-            // Convert the entered product name to lowercase for comparison
-            std::transform(productName.begin(), productName.end(), productName.begin(), ::tolower);
-
-            // Search for the product in the store
-            bool productFound = false;
-            for (const auto& product : selectedStore->getProducts()) {
-                std::string lowercaseProductName = product->getName();
-                std::transform(lowercaseProductName.begin(), lowercaseProductName.end(), lowercaseProductName.begin(), ::tolower);
-                if (lowercaseProductName == productName) {
-                    try {
-                        client.getCart().addProduct(*product);
-                        productFound = true;
-                        std::cout << "Added " << product->getName() << " to cart.\n";
-                    } catch (const std::exception& e) {
-                        std::cout << e.what() << "\n";
-                    }
-                    break;
-                }
-            }
-
-            if (!productFound) {
-                std::cout << "Product not found in this store. Please try again.\n";
-            }
-        }
-
-        std::string anotherStore;
-        std::cout << "Do you want to visit another store? (yes/no): ";
-        std::cin >> anotherStore;
-
-        if (anotherStore != "yes") {
-            break; // Break from the outer loop
-        }
     }
-
-    client.getCart().showCart();
 }
